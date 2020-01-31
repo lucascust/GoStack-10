@@ -12,10 +12,12 @@ var projectsArray = [];
 
 // Middlewares globais
 
+// Verifica se projeto solicitado pelo ID existe
 function verifyProjectId (req, res, next){
   const { id } = req.params
+
   if (!projectsArray[id]){
-    return res.json({"error": "Project do not exist."})
+    return res.status(400).json({"error": "Project do not exist."})
   }
 
   next();
@@ -26,9 +28,16 @@ function verifyProjectId (req, res, next){
 
 // POST
 server.post("/projects", (req, res) =>{
-  projectsArray.push(req.body);
+  const { id, title } = req.body;
 
-  return res.json(projectsArray);
+  const project = {
+    id,
+    title,
+    tasks: []
+  };
+  projectsArray.push(project);
+
+  return res.json(project);
 
 });
 
@@ -62,5 +71,5 @@ server.delete("/projects/:id", (req, res) => {
 
   projectsArray.splice(id, 1);
 
-  return res.json(projectsArray);
+  return res.send();
 });
