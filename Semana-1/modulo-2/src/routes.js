@@ -13,6 +13,6 @@ routes.post('/sessions', SessionController.store);
 // A partir desse middlware, demais middlewares só serão executados se o usuário for autenticado
 routes.use(authMiddleware);
 
-routes.put('/sessions', UserController.update);
+routes.put('/users', UserController.update);
 
 export default routes;
