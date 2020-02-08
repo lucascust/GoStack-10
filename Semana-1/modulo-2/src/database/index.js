@@ -20,12 +20,9 @@ class Database {
     // Percorre todos os models e inicia todos com a conexão feita acima
     // Também faz o map de todas as relações, caso existam
     models
-      .map(model => console.log("parte 1 " + model))
-      .map(model => console.log("parte 2" + model));
-
-    // models
-    //   .map(model => model.init(this.connection))
-    //   .map(model => model.associate && model.associate(this.connection.models));
+      .map(model => model.init(this.connection))
+    models
+      .map(model => model.associate && model.associate(this.connection.models));
   }
 }
 
