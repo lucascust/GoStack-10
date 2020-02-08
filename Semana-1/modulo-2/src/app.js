@@ -19,6 +19,8 @@ class App {
     this.server.use(routes);
   }
 }
-
+process.on('uncaughtException', function (err) {
+  console.log(err);
+});
 // OLD: module.exports = new App().server;
 export default new App().server;

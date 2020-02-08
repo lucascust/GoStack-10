@@ -26,11 +26,16 @@ class User extends Model {
       }
     });
   }
-
   // Método para decriptografar a senha
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
   }
+
+  // Relações
+  static associate(models) {
+    this.belongsTo(models.File, { foreignKey: 'avatar_id' })
+  }
+
 }
 
 export default User;
