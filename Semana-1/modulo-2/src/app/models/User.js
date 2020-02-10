@@ -25,7 +25,9 @@ class User extends Model {
         user.password_hash = await bcrypt.hash(user.password, 8);
       }
     });
+    return this;
   }
+
   // Método para decriptografar a senha
   checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
@@ -33,9 +35,8 @@ class User extends Model {
 
   // Relações
   static associate(models) {
-    this.belongsTo(models.File, { foreignKey: 'avatar_id' })
+    this.belongsTo(models.File, { foreignKey: 'avatar_id' });
   }
-
 }
 
 export default User;

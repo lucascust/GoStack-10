@@ -1,11 +1,12 @@
 import { Router } from 'express';
 import multer from 'multer';
 
-import multerConfig from './config/multer'
+import multerConfig from './config/multer';
 // Controllers
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
+import ProviderController from './app/controllers/ProviderController';
 // Middleware
 import authMiddleware from './app/middlewares/auth';
 
@@ -16,6 +17,7 @@ const upload = multer(multerConfig);
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+routes.get('/providers', ProviderController.index);
 
 // A partir desse middlware, demais middlewares só serão executados se o usuário for autenticado
 routes.use(authMiddleware);
