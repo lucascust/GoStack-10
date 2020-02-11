@@ -1,8 +1,3 @@
-/*
-  Migration que cria uma relação entre as tabelas Files e User
-  - Adiciona coluna 'avatar_id' em User, com referencia 'id' de Files
-*/
-
 module.exports = {
   up: (queryInterface, Sequelize) => {
     // addColumn: table, key, atributos, opções
