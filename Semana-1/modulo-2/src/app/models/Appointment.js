@@ -12,7 +12,8 @@ class Appointment extends Model {
       }
     );
     return this;
-  };
+  }
+
   // Relações
   static associate(models) {
     this.belongsTo(models.User, { foreignKey: 'user_id', as: 'user' });
