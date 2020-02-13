@@ -102,7 +102,7 @@ class AppointmentController {
     const appointment = await Appointment.create({
       user_id: req.userId,
       provider_id,
-      date,
+      hourStart,
     });
 
     /**
@@ -122,9 +122,9 @@ class AppointmentController {
   }
 
   async delete(req, res) {
-    const appointment = Appointment.findByPk(req.params.id);
+    const appointment = await Appointment.findByPk(req.params.id);
 
-    if (req.userId != appointment.user_id) {
+    if (req.userId !== appointment.user_id) {
       return res.status(401).json({
         error: 'You do not have permission to cancel this appointment',
       });

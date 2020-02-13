@@ -6,9 +6,10 @@
   "configurations": [
     {
       "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
-      "program": "${workspaceFolder}/src/server.js"
+      "request": "attach",
+      "name": "Node: Nodemon",
+      "restart": true,
+      "protocol": "inspector"
     }
   ]
 }
