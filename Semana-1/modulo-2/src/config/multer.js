@@ -1,3 +1,4 @@
+// Node.js middleware for handling multipart/form-data.
 import multer from 'multer';
 import crypto from 'crypto';
 // extname informa a extensão do arquivo,
@@ -12,9 +13,8 @@ export default {
 
         // callback: (16)hex.ext "41C2A31F2A1E.png"
 
-        return cb(null, res.toString('hex') + extname(file.originalname))
+        return cb(null, res.toString('hex') + extname(file.originalname));
       });
     },
   }),
 };
-

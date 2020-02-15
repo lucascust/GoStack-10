@@ -1,10 +1,14 @@
 import * as Yup from 'yup';
+
 import { startOfHour, parseISO, isBefore, format, subHours } from 'date-fns';
 import pt from 'date-fns/locale/pt-BR';
+
 import User from '../models/User';
 import File from '../models/File';
 import Appointment from '../models/Appointment';
+
 import Notification from '../schemas/Notification';
+import Mail from '../../lib/Mail';
 
 class AppointmentController {
   async index(req, res) {
@@ -98,11 +102,10 @@ class AppointmentController {
         .status(400)
         .json({ error: 'Appointment date is not available' });
     }
-
     const appointment = await Appointment.create({
       user_id: req.userId,
       provider_id,
-      hourStart,
+      date: hourStart,
     });
 
     /**
@@ -122,7 +125,23 @@ class AppointmentController {
   }
 
   async delete(req, res) {
-    const appointment = await Appointment.findByPk(req.params.id);
+    /**
+     * Find appointment and include provider data "name" and "email"
+     */
+    const appointment = await Appointment.findByPk(req.params.id, {
+      include: [
+        {
+          model: User,
+          as: 'provider',
+          attributes: ['name', 'email'],
+        },
+        {
+          model: User,
+          as: 'user',
+          attributes: ['name'],
+        },
+      ],
+    });
 
     if (req.userId !== appointment.user_id) {
       return res.status(401).json({
@@ -141,6 +160,22 @@ class AppointmentController {
     appointment.canceled_at = new Date();
 
     await appointment.save();
+
+    /**
+     * send confirmation email
+     */
+    await Mail.sendMail({
+      to: `${appointment.provider.name} <${appointment.provider.email}>`,
+      subject: 'Agendamento cancelado',
+      template: 'cancellation',
+      context: {
+        provider: appointment.provider.name,
+        user: appointment.user.name,
+        date: format(appointment.date, "dd 'de' MMMM', às ' H:mm'h'", {
+          locale: pt,
+        }),
+      },
+    });
 
     return res.json(appointment);
   }
