@@ -1,6 +1,6 @@
 import File from '../models/File';
 
-class UserController {
+class FileController {
   async store(req, res) {
     const { originalname: name, filename: path } = req.file;
 
@@ -10,4 +10,4 @@ class UserController {
   }
 }
 
-export default new UserController();
+export default new FileController();

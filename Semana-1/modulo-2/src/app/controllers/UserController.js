@@ -59,12 +59,10 @@ class UserController {
 
     const { email, oldPassword } = req.body;
 
-
     // ID passado para dentro do request pelo middleware de auth
     const user = await User.findByPk(req.userId);
 
     if (email && email !== user.email) {
-
       const userExists = await User.findOne({ where: { email } });
 
       if (userExists) {
